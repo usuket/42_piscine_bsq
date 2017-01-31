@@ -114,11 +114,6 @@ t_meta				read_map_meta(int fd)
 			break ;
 	}
 	meta.height = ft_atoi(map_length_str);
-	printf("meta height:%d\n", meta.height);
-	printf("meta width:%d\n", meta.width);
-	printf("meta empty:%c\n", meta.empty);
-	printf("meta obstacle:%c\n", meta.obstacle);
-	printf("meta full:%c\n", meta.full);
 	return (meta);
 }
 
@@ -130,20 +125,17 @@ t_cell				*read_on_memory(int fd, t_meta meta)
 	int			i;
 
 	matrix_size = meta.width * meta.height;
-//	printf("matrix_size: %d", matrix_size);
 	cell_array = malloc(sizeof(char) * (1000000000));
 	if (cell_array == NULL)
 	{
 		printf("cell_array NULL");
 	}
-	printf("read");
 	while (read(fd, &buffer, 1) > 0)
 	{
 		if (buffer == '\n')
 			break ;
 	}
 	i = 0;
-	printf("read");
 	while (read(fd, &buffer, 1) > 0)
 	{
 		if (buffer != '\n')
@@ -177,7 +169,8 @@ int					crawl_cell(t_meta meta, t_cell *cell_array, int index)
 			}
 			target_y = index + meta.width * i + size;
 			target_x = index + meta.width * size + i;
-			if (cell_array[target_y].cell == meta.obstacle || cell_array[target_x].cell == meta.obstacle)
+			if (cell_array[target_y].cell == meta.obstacle
+				|| cell_array[target_x].cell == meta.obstacle)
 			{
 				cell_array[index].size = size;
 				return (size);
@@ -259,9 +252,6 @@ void					display_cells(t_meta meta, t_cell *cell_array, t_biggest biggest)
 	int y;
 
 	y = 0;
-	printf("meta.height:%d", meta.height);
-	printf("meta.width:%d", meta.width);
-	printf("\n");
 	while (y < meta.height)
 	{
 		x = 0;
