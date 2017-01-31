@@ -18,6 +18,7 @@
 #include <unistd.h>
 
 #define BUF_SIZE 1
+#define MEMORY_BUFFER 20000
 
 typedef struct		s_point
 {
@@ -114,22 +115,19 @@ t_meta				read_map_meta(int fd)
 			break ;
 	}
 	meta.height = ft_atoi(map_length_str);
+	free(map_length_str);
 	return (meta);
 }
 
 t_cell				*read_on_memory(int fd, t_meta meta)
 {
 	t_cell		*cell_array;
-	int			matrix_size;
 	char		buffer;
 	int			i;
 
-	matrix_size = meta.width * meta.height;
-	cell_array = malloc(sizeof(char) * (1000000000));
+	cell_array = malloc(sizeof(t_cell) * ((meta.width * meta.height) + MEMORY_BUFFER));
 	if (cell_array == NULL)
-	{
 		printf("cell_array NULL");
-	}
 	while (read(fd, &buffer, 1) > 0)
 	{
 		if (buffer == '\n')
