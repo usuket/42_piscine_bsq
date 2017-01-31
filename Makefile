@@ -17,7 +17,8 @@ INCLUDES     =./includes/
 all: fclean $(EXE)
 
 $(EXE):
-	gcc -Wall -Wextra -Werror -I $(INCLUDES) $(SRCS) -o $(EXE)
+#	gcc -Wall -Wextra -Werror -I $(INCLUDES) $(SRCS) -o $(EXE)
+	gcc -I $(INCLUDES) $(SRCS) -o $(EXE)
 
 clean:
 	rm -f *.o
