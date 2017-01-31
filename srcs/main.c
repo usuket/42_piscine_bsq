@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include <ft_header.h>
+#include <bsq_header.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <errno.h>
@@ -18,63 +19,7 @@
 #include <unistd.h>
 
 #define BUF_SIZE 1
-#define MEMORY_BUFFER 20000
-
-typedef struct		s_point
-{
-	int		x;
-	int		y;
-}					t_point;
-
-typedef struct		s_cell
-{
-	char	cell;
-	int		size;
-}					t_cell;
-
-typedef struct		s_biggest
-{
-	int		index;
-	int		size;
-}					t_biggest;
-
-typedef struct		s_meta
-{
-	int		height;
-	int		width;
-	char	empty;
-	char	obstacle;
-	char	full;
-}					t_meta;
-
-int					yx_to_index(t_meta meta, int y, int x)
-{
-	return ((meta.width * y) + x);
-}
-
-int					point_to_index(t_meta meta, t_point point)
-{
-	return ((meta.width * point.y) + point.x);
-}
-
-int					index_to_y(t_meta meta, int index)
-{
-	return (index / meta.width);
-}
-
-int					index_to_x(t_meta meta, int index)
-{
-	return (index % meta.width);
-}
-
-t_point				index_to_point(t_meta meta, int index)
-{
-	t_point point;
-
-	point.y = index / meta.width;
-	point.x = index % meta.width;
-	return (point);
-}
+#define MEM_BUF 20000
 
 t_meta				read_map_meta(int fd)
 {
@@ -125,7 +70,7 @@ t_cell				*read_on_memory(int fd, t_meta meta)
 	char		buffer;
 	int			i;
 
-	cell_array = malloc(sizeof(t_cell) * ((meta.width * meta.height) + MEMORY_BUFFER));
+	cell_array = malloc(sizeof(t_cell) * (meta.width * meta.height + MEM_BUF));
 	if (cell_array == NULL)
 		printf("cell_array NULL");
 	while (read(fd, &buffer, 1) > 0)
