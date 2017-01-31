@@ -109,6 +109,45 @@ t_cell 	*read_on_memory(int fd , t_meta meta)
 	return (cell_array);
 }
 
+
+int 	crawl_cell(t_meta meta,t_cell *cell_array,int point,int y,int x)
+{
+	int i;
+	int j;
+	i = 0;
+	j = 0;
+
+	if(y >= meta.height || x >= meta.width)
+		return (0);
+
+	if(cell_array[(meta.width * y) + x].cell == meta.obstacle)
+		return (0);
+	return (0);
+}
+
+void 	count_square(t_meta meta,t_cell *cell_array)
+{
+	int y;
+	int x;
+
+	y = 0;
+	while(y < meta.height)
+	{
+		x = 0;
+		while (x < meta.width)
+		{
+			int point = (meta.width * y) + x;
+			if(cell_array[point].cell == meta.empty)
+			{
+				crawl_cell(meta,cell_array,point,y,x);
+				printf("y:%d x:%d size:%d\n",y,x,cell_array[point].size);
+			}
+			x++;
+		}
+		y++;
+	}
+}
+
 void 	display_cells(t_meta meta,t_cell *cell_array)
 {
 	int i;
@@ -160,6 +199,7 @@ int	file_read(char *file_path)
 	close(fd);
 	fd = open(file_path, O_RDONLY);
 	matrix = read_on_memory(fd, meta);
+	count_square(meta, matrix);
 	display_cells(meta, matrix);
 	free(matrix);
 	close(fd);
