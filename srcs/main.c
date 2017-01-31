@@ -90,7 +90,7 @@ t_cell				*read_on_memory(int fd, t_meta meta)
 	return (cell_array);
 }
 
-void					display_cells(t_meta meta, t_cell *cells, t_biggest big)
+void				display_cells(t_meta meta, t_cell *cells, t_biggest big)
 {
 	int i;
 	int x;
@@ -116,7 +116,7 @@ void					display_cells(t_meta meta, t_cell *cells, t_biggest big)
 	}
 }
 
-int						file_read(char *file_path)
+int					file_read(char *file_path)
 {
 	int				fd;
 	t_meta			meta;
@@ -141,7 +141,7 @@ int						file_read(char *file_path)
 	return (0);
 }
 
-int						main(int argc, char **argv)
+int					main(int argc, char **argv)
 {
 	int i;
 
