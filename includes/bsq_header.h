@@ -46,4 +46,9 @@ int					index_to_y(t_meta meta, int index);
 int					index_to_x(t_meta meta, int index);
 t_point				index_to_point(t_meta meta, int index);
 
+int					crawl_cell(t_meta meta, t_cell *cell_array, int index);
+void				count_square(t_meta meta, t_cell *cell_array);
+t_biggest			check_biggest_square(t_meta meta, t_cell *cell_array);
+int					is_biggest_cells(t_meta meta, int i, t_biggest biggest);
+
 #endif
