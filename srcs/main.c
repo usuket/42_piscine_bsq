@@ -62,7 +62,6 @@ t_meta    read_map_meta(int fd)
 			break ;
 		}
 	}
-
 	// read second line
 	read(fd, &buffer, 1); // line break
 	while (read(fd, &buffer, 1) != 0)
@@ -74,13 +73,12 @@ t_meta    read_map_meta(int fd)
 		else
 			break;
 	}
-
 	meta.height = ft_atoi(map_length_str);
-	printf("meta height:%d\n",meta.height);
-	printf("meta width:%d\n",meta.width);
-	printf("meta empty:%c\n",meta.empty);
-	printf("meta obstacle:%c\n",meta.obstacle);
-	printf("meta full:%c\n",meta.full);
+	printf("meta height:%d\n", meta.height);
+	printf("meta width:%d\n", meta.width);
+	printf("meta empty:%c\n", meta.empty);
+	printf("meta obstacle:%c\n", meta.obstacle);
+	printf("meta full:%c\n", meta.full);
 	return meta;
 }
 
@@ -96,37 +94,36 @@ t_cell 	*read_on_memory(int fd , t_meta meta)
 
 	while (read(fd, &buffer, 1) > 0)
 	{
-		if(buffer == '\n')
+		if (buffer == '\n')
 			break;
 	}
 	i = 0;
 	while (read(fd, &buffer, 1) > 0)
 	{
-		if(buffer != '\n')
+		if (buffer != '\n')
 		{
 			cell_array[i].cell = buffer;
 			i++;
 		}
 	}
-	return(cell_array);
+	return (cell_array);
 }
-
 
 void 	display_cells(t_meta meta,t_cell *cell_array)
 {
 	int i;
 
 	i = 0;
-	while(cell_array[i].cell) {
+	while (cell_array[i].cell) {
 
-		if(cell_array[i].cell == meta.empty) {
+		if (cell_array[i].cell == meta.empty) {
 			printf("%c", meta.full);
-		}else if(cell_array[i].cell == meta.obstacle){
+		}else if (cell_array[i].cell == meta.obstacle){
 			printf("%c", meta.obstacle);
 		}else{
 			printf("%c", meta.empty);
 		}
-		if(i != 0 && (i + 1) % meta.width == 0)
+		if (i != 0 && (i + 1) % meta.width == 0)
 			printf("\n");
 		i++;
 	}
@@ -140,7 +137,7 @@ void 	display_cells(t_meta meta,t_cell *cell_array)
 //	line_count= 0;
 //	while (read(fd, &buffer, BUF_SIZE) != 0)
 //	{
-//		if(buffer == '\n')
+//		if (buffer == '\n')
 //			line_count++;
 //		write(1, &buffer, BUF_SIZE);
 //	}
@@ -149,9 +146,10 @@ void 	display_cells(t_meta meta,t_cell *cell_array)
 
 int	file_read(char *file_path)
 {
-	int             fd;
+	int				fd;
 	t_meta			meta;
 	t_cell			*matrix;
+
 	fd = open(file_path, O_RDONLY);
 	if (fd == -1)
 	{
@@ -161,8 +159,8 @@ int	file_read(char *file_path)
 	meta = read_map_meta(fd);
 	close(fd);
 	fd = open(file_path, O_RDONLY);
-	matrix = read_on_memory(fd,meta);
-	display_cells(meta,matrix);
+	matrix = read_on_memory(fd, meta);
+	display_cells(meta, matrix);
 	free(matrix);
 	close(fd);
 	return (0);
@@ -172,18 +170,17 @@ int	main(int argc, char **argv)
 {
 	int i;
 
-	if(argc < 2)
+	if (argc < 2)
 	{
 		printf("need argv\n");
-		return(0);
+		return (0);
 	}
-
 	i = 1;
-	while(i < argc)
+	while (i < argc)
 	{
 		file_read(argv[i]);
 		printf("\n");
 		i++;
 	}
-	return(0);
+	return (0);
 }
