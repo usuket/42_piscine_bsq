@@ -73,7 +73,7 @@ t_meta    read_map_meta(int fd)
 	int char_count;
 	char *map_length_str;
 
-	map_length_str = malloc(sizeof(char) * (100));
+	map_length_str = malloc(sizeof(char) * (10000000));
 	line_count = 0;
 	char_count = 0;
 
@@ -123,14 +123,21 @@ t_cell 	*read_on_memory(int fd , t_meta meta)
 	int i;
 
 	matrix_size = meta.width * meta.height;
-	cell_array = malloc(10000);
-
+	printf("matrix_size: %d", matrix_size);
+	cell_array = malloc(sizeof(char) * (1000000000));
+//	cell_array = malloc(sizeof(char) * (matrix_size + 100));
+	if(cell_array == NULL)
+	{
+		printf("cell_array NULL");
+	}
+	printf("read");
 	while (read(fd, &buffer, 1) > 0)
 	{
 		if (buffer == '\n')
 			break;
 	}
 	i = 0;
+	printf("read");
 	while (read(fd, &buffer, 1) > 0)
 	{
 		if (buffer != '\n')
@@ -188,11 +195,34 @@ void 	count_square(t_meta meta,t_cell *cell_array)
 			{
 				crawl_cell(meta, cell_array, index);
 			}
-			printf("y:%d x:%d size:%d\n", y, x, cell_array[index].size);
+//			printf("y:%d x:%d size:%d\n", y, x, cell_array[index].size);
 			x++;
 		}
 		y++;
 	}
+}
+
+void 	check_biggest_square(t_meta meta,t_cell *cell_array)
+{
+	int i;
+	int index;
+	int size;
+
+	i = 0;
+	index = 0;
+	size = 0;
+	while (cell_array[i].cell)
+	{
+		if(cell_array[i].size > size)
+		{
+			size = cell_array[i].size;
+			index = i;
+		}
+		i++;
+	}
+//	meta.biggest_size = size;
+//	meta.biggest_index = index;
+	printf("biggest_size:%d,index%d\n", size,index);
 }
 
 void 	display_cells(t_meta meta,t_cell *cell_array)
@@ -245,8 +275,11 @@ int	file_read(char *file_path)
 	meta = read_map_meta(fd);
 	close(fd);
 	fd = open(file_path, O_RDONLY);
+	printf("next read_on_memory\n");
 	matrix = read_on_memory(fd, meta);
+	printf("next count_square\n");
 	count_square(meta, matrix);
+	check_biggest_square(meta, matrix);
 	display_cells(meta, matrix);
 	free(matrix);
 	close(fd);
