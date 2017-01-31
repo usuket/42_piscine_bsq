@@ -113,7 +113,7 @@ t_meta				read_map_meta(int fd)
 			meta.width++;
 		}
 		else
-			break;
+			break ;
 	}
 	meta.height = ft_atoi(map_length_str);
 	printf("meta height:%d\n", meta.height);
@@ -121,7 +121,7 @@ t_meta				read_map_meta(int fd)
 	printf("meta empty:%c\n", meta.empty);
 	printf("meta obstacle:%c\n", meta.obstacle);
 	printf("meta full:%c\n", meta.full);
-	return meta;
+	return (meta);
 }
 
 t_cell				*read_on_memory(int fd, t_meta meta)
@@ -158,14 +158,13 @@ t_cell				*read_on_memory(int fd, t_meta meta)
 	return (cell_array);
 }
 
-
 int					crawl_cell(t_meta meta, t_cell *cell_array, int index)
 {
-	int		i;
-	int		size;
-	t_point	point;
-	int target_y;
-	int target_x;
+	int				i;
+	int				size;
+	int				target_y;
+	int				target_x;
+	t_point			point;
 
 	point = index_to_point(meta, index);
 	size = 1;
@@ -183,8 +182,8 @@ int					crawl_cell(t_meta meta, t_cell *cell_array, int index)
 			target_x = index + meta.width * size + i;
 			if (cell_array[target_y].cell == meta.obstacle || cell_array[target_x].cell == meta.obstacle)
 			{
-					cell_array[index].size = size;
-					return (size);
+				cell_array[index].size = size;
+				return (size);
 			}
 			i++;
 		}
@@ -194,6 +193,7 @@ int					crawl_cell(t_meta meta, t_cell *cell_array, int index)
 
 void					count_square(t_meta meta, t_cell *cell_array)
 {
+	int index;
 	int y;
 	int x;
 
@@ -203,7 +203,7 @@ void					count_square(t_meta meta, t_cell *cell_array)
 		x = 0;
 		while (x < meta.width)
 		{
-			int index = yx_to_index(meta, y, x);
+			index = yx_to_index(meta, y, x);
 			if (cell_array[index].cell == meta.empty)
 			{
 				crawl_cell(meta, cell_array, index);
@@ -217,9 +217,10 @@ void					count_square(t_meta meta, t_cell *cell_array)
 
 t_biggest				check_biggest_square(t_meta meta, t_cell *cell_array)
 {
-	int i;
-	int index;
-	int size;
+	int			i;
+	int			index;
+	int			size;
+	t_biggest	biggest;
 
 	i = 0;
 	index = 0;
@@ -233,10 +234,9 @@ t_biggest				check_biggest_square(t_meta meta, t_cell *cell_array)
 		}
 		i++;
 	}
-	t_biggest biggest;
 	biggest.size = size;
 	biggest.index = index;
-	printf("biggest_size:%d,index%d\n", size,index);
+	printf("biggest_size:%d,index%d\n", size, index);
 	return (biggest);
 }
 
