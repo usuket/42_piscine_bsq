@@ -245,7 +245,7 @@ int						is_biggest_cells(t_meta meta, int i, t_biggest biggest)
 	return (0);
 }
 
-void					display_cells(t_meta meta, t_cell *cell_array, t_biggest biggest)
+void					display_cells(t_meta meta, t_cell *cells, t_biggest big)
 {
 	int i;
 	int x;
@@ -258,21 +258,15 @@ void					display_cells(t_meta meta, t_cell *cell_array, t_biggest biggest)
 		while (x < meta.width)
 		{
 			i = yx_to_index(meta, y, x);
-			if (is_biggest_cells(meta, i, biggest))
-			{
-				printf("%c", meta.full);
-			}
-			else if (cell_array[i].cell == meta.obstacle)
-			{
-				printf("%c", meta.obstacle);
-			}
+			if (is_biggest_cells(meta, i, big))
+				ft_putchar(meta.full);
+			else if (cells[i].cell == meta.obstacle)
+				ft_putchar(meta.obstacle);
 			else
-			{
-				printf("%c", meta.empty);
-			}
+				ft_putchar(meta.empty);
 			x++;
 		}
-		printf("\n");
+		ft_putchar('\n');
 		y++;
 	}
 }
