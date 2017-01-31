@@ -19,50 +19,54 @@
 
 #define BUF_SIZE 1
 
-typedef struct s_point{
+typedef struct		s_point
+{
 	int x;
 	int y;
-} t_point;
+}					t_point;
 
-typedef struct s_cell{
+typedef struct		s_cell
+{
 	char cell;
 	int size;
-} t_cell;
+}					t_cell;
 
-typedef struct s_biggest{
+typedef struct		s_biggest
+{
 	int index;
 	int size;
-} t_biggest;
+}					t_biggest;
 
-typedef struct s_meta{
+typedef struct		s_meta
+{
 	int height;
 	int width;
 	char empty;
 	char obstacle;
 	char full;
-} t_meta;
+}					t_meta;
 
-int		yx_to_index(t_meta meta, int y ,int x)
+int					yx_to_index(t_meta meta, int y ,int x)
 {
 	return ((meta.width * y) + x);
 }
 
-int		point_to_index(t_meta meta, t_point	point)
+int					point_to_index(t_meta meta, t_point	point)
 {
 	return ((meta.width * point.y) + point.x);
 }
 
-int	index_to_y(t_meta meta, int index)
+int					index_to_y(t_meta meta, int index)
 {
 	return (index / meta.width);
 }
 
-int	index_to_x(t_meta meta, int index)
+int					index_to_x(t_meta meta, int index)
 {
 	return (index % meta.width);
 }
 
-t_point		index_to_point(t_meta meta, int index)
+t_point				index_to_point(t_meta meta, int index)
 {
 	t_point point;
 	point.y = index / meta.width;
@@ -70,7 +74,7 @@ t_point		index_to_point(t_meta meta, int index)
 	return (point);
 }
 
-t_meta    read_map_meta(int fd)
+t_meta				read_map_meta(int fd)
 {
 	t_meta meta;
 	char buffer;
@@ -81,7 +85,6 @@ t_meta    read_map_meta(int fd)
 	map_length_str = malloc(sizeof(char) * (10000000));
 	line_count = 0;
 	char_count = 0;
-
 	// read first line
 	while (read(fd, &buffer, 1) != 0)
 	{
@@ -101,7 +104,7 @@ t_meta    read_map_meta(int fd)
 		}
 	}
 	// read second line
-	read(fd, &buffer, 1); // line break
+	read(fd, &buffer, 1);
 	while (read(fd, &buffer, 1) != 0)
 	{
 		if (buffer != '\n')
@@ -131,7 +134,7 @@ t_cell 	*read_on_memory(int fd , t_meta meta)
 	printf("matrix_size: %d", matrix_size);
 	cell_array = malloc(sizeof(char) * (1000000000));
 //	cell_array = malloc(sizeof(char) * (matrix_size + 100));
-	if(cell_array == NULL)
+	if (cell_array == NULL)
 	{
 		printf("cell_array NULL");
 	}
@@ -161,19 +164,19 @@ int 	crawl_cell(t_meta meta,t_cell *cell_array,int index)
 	int size;
 	t_point point = index_to_point(meta,index);
 	size = 1;
-	while(1)
+	while (1)
 	{
 		i = 0;
-		while(i <= size)
+		while (i <= size)
 		{
-			if(point.x + i >= meta.width || point.y + i >= meta.height)
+			if (point.x + i >= meta.width || point.y + i >= meta.height)
 			{
 				cell_array[index].size = size;
 				return (0);
 			}
 			int target_y = index + meta.width * i + size;
 			int target_x = index + meta.width * size + i;
-			if(cell_array[target_y].cell == meta.obstacle || cell_array[target_x].cell == meta.obstacle)
+			if (cell_array[target_y].cell == meta.obstacle || cell_array[target_x].cell == meta.obstacle)
 			{
 					cell_array[index].size = size;
 					return (size);
@@ -190,13 +193,13 @@ void 	count_square(t_meta meta,t_cell *cell_array)
 	int x;
 
 	y = 0;
-	while(y < meta.height)
+	while (y < meta.height)
 	{
 		x = 0;
 		while (x < meta.width)
 		{
 			int index = yx_to_index(meta, y, x);
-			if(cell_array[index].cell == meta.empty)
+			if (cell_array[index].cell == meta.empty)
 			{
 				crawl_cell(meta, cell_array, index);
 			}
@@ -218,7 +221,7 @@ t_biggest 	check_biggest_square(t_meta meta,t_cell *cell_array)
 	size = 0;
 	while (cell_array[i].cell)
 	{
-		if(cell_array[i].size > size)
+		if (cell_array[i].size > size)
 		{
 			size = cell_array[i].size;
 			index = i;
@@ -257,9 +260,9 @@ int 	is_biggest_cells(t_meta meta,int i,t_biggest biggest)
 {
 	int count = 0;
 
-	while(count < biggest.size)
+	while (count < biggest.size)
 	{
-		if(biggest.index + (count * meta.width) <= i &&
+		if (biggest.index + (count * meta.width) <= i &&
 				i < biggest.index + biggest.size + (count * meta.width))
 		{
 			return (1);
@@ -274,14 +277,15 @@ void 	display_cells(t_meta meta,t_cell *cell_array ,t_biggest biggest)
 	int i;
 	int x;
 	int y;
+
 	y = 0;
 	printf("meta.height:%d", meta.height);
 	printf("meta.width:%d", meta.width);
 	printf("\n");
-	while(y < meta.height)
+	while (y < meta.height)
 	{
 		x = 0;
-		while(x < meta.width)
+		while (x < meta.width)
 		{
 			i = yx_to_index(meta, y, x);
 			if (is_biggest_cells(meta, i, biggest)) {
@@ -372,7 +376,6 @@ int	main(int argc, char **argv)
 	while (i < argc)
 	{
 		file_read(argv[i]);
-		printf("\n");
 		i++;
 	}
 	return (0);
