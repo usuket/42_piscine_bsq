@@ -19,6 +19,11 @@
 
 #define BUF_SIZE 1
 
+typedef struct s_point{
+	int x;
+	int y;
+} t_point;
+
 typedef struct s_cell{
 	char cell;
 	int size;
@@ -31,6 +36,34 @@ typedef struct s_meta{
 	char obstacle;
 	char full;
 } t_meta;
+
+int		yx_to_index(t_meta meta, int y ,int x)
+{
+	return ((meta.width * y) + x);
+}
+
+int		point_to_index(t_meta meta, t_point	point)
+{
+	return ((meta.width * point.y) + point.x);
+}
+
+int	index_to_y(t_meta meta, int index)
+{
+	return (index / meta.width);
+}
+
+int	index_to_x(t_meta meta, int index)
+{
+	return (index % meta.width);
+}
+
+t_point		index_to_point(t_meta meta, int index)
+{
+	t_point point;
+	point.y = index / meta.width;
+	point.x = index % meta.width;
+	return (point);
+}
 
 t_meta    read_map_meta(int fd)
 {
@@ -110,19 +143,33 @@ t_cell 	*read_on_memory(int fd , t_meta meta)
 }
 
 
-int 	crawl_cell(t_meta meta,t_cell *cell_array,int point,int y,int x)
+int 	crawl_cell(t_meta meta,t_cell *cell_array,int index)
 {
 	int i;
-	int j;
-	i = 0;
-	j = 0;
-
-	if(y >= meta.height || x >= meta.width)
-		return (0);
-
-	if(cell_array[(meta.width * y) + x].cell == meta.obstacle)
-		return (0);
-	return (0);
+	int size;
+	t_point point = index_to_point(meta,index);
+	size = 1;
+	while(1)
+	{
+		i = 0;
+		while(i <= size)
+		{
+			if(point.x + i >= meta.width || point.y + i >= meta.height)
+			{
+				cell_array[index].size = size;
+				return (0);
+			}
+			int target_y = index + meta.width * i + size;
+			int target_x = index + meta.width * size + i;
+			if(cell_array[target_y].cell == meta.obstacle || cell_array[target_x].cell == meta.obstacle)
+			{
+					cell_array[index].size = size;
+					return (size);
+			}
+			i++;
+		}
+		size++;
+	}
 }
 
 void 	count_square(t_meta meta,t_cell *cell_array)
@@ -136,12 +183,12 @@ void 	count_square(t_meta meta,t_cell *cell_array)
 		x = 0;
 		while (x < meta.width)
 		{
-			int point = (meta.width * y) + x;
-			if(cell_array[point].cell == meta.empty)
+			int index = yx_to_index(meta, y, x);
+			if(cell_array[index].cell == meta.empty)
 			{
-				crawl_cell(meta,cell_array,point,y,x);
-				printf("y:%d x:%d size:%d\n",y,x,cell_array[point].size);
+				crawl_cell(meta, cell_array, index);
 			}
+			printf("y:%d x:%d size:%d\n", y, x, cell_array[index].size);
 			x++;
 		}
 		y++;
