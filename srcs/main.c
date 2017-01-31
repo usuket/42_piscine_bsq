@@ -21,8 +21,8 @@
 
 typedef struct		s_point
 {
-	int x;
-	int y;
+	int		x;
+	int		y;
 }					t_point;
 
 typedef struct		s_cell
@@ -33,8 +33,8 @@ typedef struct		s_cell
 
 typedef struct		s_biggest
 {
-	int index;
-	int size;
+	int		index;
+	int		size;
 }					t_biggest;
 
 typedef struct		s_meta
@@ -51,7 +51,7 @@ int					yx_to_index(t_meta meta, int y, int x)
 	return ((meta.width * y) + x);
 }
 
-int					point_to_index(t_meta meta, t_point	point)
+int					point_to_index(t_meta meta, t_point point)
 {
 	return ((meta.width * point.y) + point.x);
 }
@@ -86,7 +86,6 @@ t_meta				read_map_meta(int fd)
 	map_length_str = malloc(sizeof(char) * (10000000));
 	line_count = 0;
 	char_count = 0;
-	// read first line
 	while (read(fd, &buffer, 1) != 0)
 	{
 		if (buffer == '\n')
@@ -104,7 +103,6 @@ t_meta				read_map_meta(int fd)
 			break ;
 		}
 	}
-	// read second line
 	read(fd, &buffer, 1);
 	while (read(fd, &buffer, 1) != 0)
 	{
@@ -132,9 +130,8 @@ t_cell				*read_on_memory(int fd, t_meta meta)
 	int			i;
 
 	matrix_size = meta.width * meta.height;
-	printf("matrix_size: %d", matrix_size);
+//	printf("matrix_size: %d", matrix_size);
 	cell_array = malloc(sizeof(char) * (1000000000));
-//	cell_array = malloc(sizeof(char) * (matrix_size + 100));
 	if (cell_array == NULL)
 	{
 		printf("cell_array NULL");
@@ -208,7 +205,6 @@ void					count_square(t_meta meta, t_cell *cell_array)
 			{
 				crawl_cell(meta, cell_array, index);
 			}
-//			printf("y:%d x:%d size:%d\n", y, x, cell_array[index].size);
 			x++;
 		}
 		y++;
@@ -236,7 +232,6 @@ t_biggest				check_biggest_square(t_meta meta, t_cell *cell_array)
 	}
 	biggest.size = size;
 	biggest.index = index;
-	printf("biggest_size:%d,index%d\n", size, index);
 	return (biggest);
 }
 
@@ -276,7 +271,8 @@ void					display_cells(t_meta meta, t_cell *cell_array, t_biggest biggest)
 			if (is_biggest_cells(meta, i, biggest))
 			{
 				printf("%c", meta.full);
-			} else if (cell_array[i].cell == meta.obstacle)
+			}
+			else if (cell_array[i].cell == meta.obstacle)
 			{
 				printf("%c", meta.obstacle);
 			}
@@ -307,9 +303,7 @@ int						file_read(char *file_path)
 	meta = read_map_meta(fd);
 	close(fd);
 	fd = open(file_path, O_RDONLY);
-	printf("next read_on_memory\n");
 	matrix = read_on_memory(fd, meta);
-	printf("next count_square\n");
 	count_square(meta, matrix);
 	biggest = check_biggest_square(meta, matrix);
 	display_cells(meta, matrix, biggest);
