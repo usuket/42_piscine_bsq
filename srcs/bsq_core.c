@@ -12,41 +12,44 @@
 
 #include <bsq_header.h>
 
-int				crawl_cell(t_meta meta, t_cell *cell_array, int index)
+typedef struct		s_cell_crawler
 {
 	int				i;
 	int				size;
 	int				target_y;
 	int				target_x;
+}					t_cell_crawler;
+
+void				crawl_cell(t_meta meta, t_cell *cells, int index)
+{
+	t_cell_crawler	c;
 	t_point			point;
 
 	point = index_to_point(meta, index);
-	size = 1;
+	c.size = 1;
 	while (1)
 	{
-		i = 0;
-		while (i <= size)
+		c.i = 0;
+		while (c.i <= c.size)
 		{
-			if (point.x + i >= meta.width || point.y + i >= meta.height)
+			c.target_y = index + meta.width * c.i + c.size;
+			c.target_x = index + meta.width * c.size + c.i;
+			if (point.x + c.i >= meta.width || point.y + c.i >= meta.height
+				|| cells[c.target_y].cell == meta.obstacle
+				|| cells[c.target_x].cell == meta.obstacle)
+				cells[index].size = c.size;
+			else
 			{
-				cell_array[index].size = size;
-				return (0);
+				c.i++;
+				continue;
 			}
-			target_y = index + meta.width * i + size;
-			target_x = index + meta.width * size + i;
-			if (cell_array[target_y].cell == meta.obstacle
-				|| cell_array[target_x].cell == meta.obstacle)
-			{
-				cell_array[index].size = size;
-				return (size);
-			}
-			i++;
+			return ;
 		}
-		size++;
+		c.size++;
 	}
 }
 
-void			count_square(t_meta meta, t_cell *cell_array)
+void				count_square(t_meta meta, t_cell *cells)
 {
 	int index;
 	int y;
@@ -59,9 +62,9 @@ void			count_square(t_meta meta, t_cell *cell_array)
 		while (x < meta.width)
 		{
 			index = yx_to_index(meta, y, x);
-			if (cell_array[index].cell == meta.empty)
+			if (cells[index].cell == meta.empty)
 			{
-				crawl_cell(meta, cell_array, index);
+				crawl_cell(meta, cells, index);
 			}
 			x++;
 		}
@@ -69,7 +72,7 @@ void			count_square(t_meta meta, t_cell *cell_array)
 	}
 }
 
-t_biggest		check_biggest_square(t_meta meta, t_cell *cell_array)
+t_biggest			check_biggest_square(t_meta meta, t_cell *cells)
 {
 	int			i;
 	int			index;
@@ -79,11 +82,11 @@ t_biggest		check_biggest_square(t_meta meta, t_cell *cell_array)
 	i = 0;
 	index = 0;
 	size = 0;
-	while (cell_array[i].cell)
+	while (cells[i].cell)
 	{
-		if (cell_array[i].size > size)
+		if (cells[i].size > size)
 		{
-			size = cell_array[i].size;
+			size = cells[i].size;
 			index = i;
 		}
 		i++;
@@ -93,7 +96,7 @@ t_biggest		check_biggest_square(t_meta meta, t_cell *cell_array)
 	return (biggest);
 }
 
-int				is_biggest_cells(t_meta meta, int i, t_biggest biggest)
+int					is_biggest_cells(t_meta meta, int i, t_biggest biggest)
 {
 	int count;
 
