@@ -124,7 +124,7 @@ t_meta				read_map_meta(int fd)
 	return meta;
 }
 
-t_cell 	*read_on_memory(int fd, t_meta meta)
+t_cell				*read_on_memory(int fd, t_meta meta)
 {
 	t_cell		*cell_array;
 	int			matrix_size;
@@ -143,7 +143,7 @@ t_cell 	*read_on_memory(int fd, t_meta meta)
 	while (read(fd, &buffer, 1) > 0)
 	{
 		if (buffer == '\n')
-			break;
+			break ;
 	}
 	i = 0;
 	printf("read");
@@ -159,11 +159,13 @@ t_cell 	*read_on_memory(int fd, t_meta meta)
 }
 
 
-int 	crawl_cell(t_meta meta, t_cell *cell_array, int index)
+int					crawl_cell(t_meta meta, t_cell *cell_array, int index)
 {
 	int		i;
 	int		size;
 	t_point	point;
+	int target_y;
+	int target_x;
 
 	point = index_to_point(meta, index);
 	size = 1;
@@ -177,8 +179,8 @@ int 	crawl_cell(t_meta meta, t_cell *cell_array, int index)
 				cell_array[index].size = size;
 				return (0);
 			}
-			int target_y = index + meta.width * i + size;
-			int target_x = index + meta.width * size + i;
+			target_y = index + meta.width * i + size;
+			target_x = index + meta.width * size + i;
 			if (cell_array[target_y].cell == meta.obstacle || cell_array[target_x].cell == meta.obstacle)
 			{
 					cell_array[index].size = size;
@@ -190,7 +192,7 @@ int 	crawl_cell(t_meta meta, t_cell *cell_array, int index)
 	}
 }
 
-void 	count_square(t_meta meta, t_cell *cell_array)
+void					count_square(t_meta meta, t_cell *cell_array)
 {
 	int y;
 	int x;
@@ -213,7 +215,7 @@ void 	count_square(t_meta meta, t_cell *cell_array)
 	}
 }
 
-t_biggest 	check_biggest_square(t_meta meta, t_cell *cell_array)
+t_biggest				check_biggest_square(t_meta meta, t_cell *cell_array)
 {
 	int i;
 	int index;
@@ -238,28 +240,7 @@ t_biggest 	check_biggest_square(t_meta meta, t_cell *cell_array)
 	return (biggest);
 }
 
-//void 	display_cells(t_meta meta,t_cell *cell_array ,t_biggest biggest)
-//{
-//	int i;
-//
-//	i = 0;
-//	while (cell_array[i].cell) {
-//		if (cell_array[i].cell == meta.empty) {
-//			printf("%c", meta.full);
-//		}else if (cell_array[i].cell == meta.obstacle){
-//			printf("%c", meta.obstacle);
-//		}else{
-//			printf("%c", meta.empty);
-//		}
-//		if (i != 0 && (i + 1) % meta.width == 0)
-//		{
-//			printf("\n");
-//		}
-//		i++;
-//	}
-//}
-
-int 	is_biggest_cells(t_meta meta, int i, t_biggest biggest)
+int						is_biggest_cells(t_meta meta, int i, t_biggest biggest)
 {
 	int count;
 
@@ -276,7 +257,7 @@ int 	is_biggest_cells(t_meta meta, int i, t_biggest biggest)
 	return (0);
 }
 
-void	display_cells(t_meta meta, t_cell *cell_array, t_biggest biggest)
+void					display_cells(t_meta meta, t_cell *cell_array, t_biggest biggest)
 {
 	int i;
 	int x;
@@ -310,7 +291,7 @@ void	display_cells(t_meta meta, t_cell *cell_array, t_biggest biggest)
 	}
 }
 
-int	file_read(char *file_path)
+int						file_read(char *file_path)
 {
 	int				fd;
 	t_meta			meta;
@@ -337,7 +318,7 @@ int	file_read(char *file_path)
 	return (0);
 }
 
-int	main(int argc, char **argv)
+int						main(int argc, char **argv)
 {
 	int i;
 
