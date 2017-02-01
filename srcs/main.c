@@ -45,34 +45,6 @@ t_cell				*read_on_memory(int fd, t_meta meta)
 	return (cell_array);
 }
 
-void				display_cells(t_meta meta, t_cell *cells, t_biggest big)
-{
-	int i;
-	int x;
-	int y;
-
-	y = 0;
-	while (y < meta.height)
-	{
-		x = 0;
-		while (x < meta.width)
-		{
-			i = yx_to_index(meta, y, x);
-			if (cells[i].cell == '\0')
-				return ;
-			if (is_biggest_cells(meta, i, big))
-				ft_putchar(meta.full);
-			else if (cells[i].cell == meta.obstacle)
-				ft_putchar(meta.obstacle);
-			else
-				ft_putchar(meta.empty);
-			x++;
-		}
-		ft_putchar('\n');
-		y++;
-	}
-}
-
 int					file_read(char *file_path, t_meta *meta)
 {
 	int				fd;
