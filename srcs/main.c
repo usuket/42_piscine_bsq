@@ -116,13 +116,19 @@ int					main(int argc, char **argv)
 	if (argc < 2)
 	{
 		read_stdin();
-		file_read("./tmp/tmp");
+		if (map_is_valid("./tmp/tmp"))
+			file_read("./tmp/tmp");
+		else
+			write(2, "map error\n", 10);
 		return (0);
 	}
 	i = 1;
 	while (i < argc)
 	{
-		file_read(argv[i]);
+		if (map_is_valid(argv[i]))
+			file_read(argv[i]);
+		else
+			write(2, "map error\n", 10);
 		i++;
 	}
 	return (0);
