@@ -16,7 +16,6 @@
 #include <fcntl.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <stdio.h>
 
 #define STD_READ_BUF 30
 
@@ -77,15 +76,14 @@ void				count_width(t_meta *meta, int fd)
 	}
 }
 
-int					map_is_valid(char *file_path)
+int					map_is_valid(char *file_path, t_meta *meta)
 {
 	t_map_valid		val;
-	t_meta			meta;
 
 	init_valid(&val);
 	val.fd = open(file_path, O_RDONLY);
-	set_valid_1(&val, &meta);
-	set_valid_2(&val, &meta);
+	set_valid_1(&val, meta);
+	set_valid_2(&val, meta);
 	if (val.row_counter - 1 != val.line_num)
 		val.invalid_flag = 1;
 	close(val.fd);

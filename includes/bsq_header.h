@@ -68,7 +68,7 @@ void				read_stdin(void);
 void				count_square(t_meta meta, t_cell *cell_array);
 t_biggest			check_biggest_square(t_cell *cell_array);
 int					is_biggest_cells(t_meta meta, int i, t_biggest biggest);
-int					map_is_valid(char *file_path);
+int					map_is_valid(char *file_path, t_meta *meta);
 
 void				init_valid(t_map_valid *val);
 void				width_is_valid(t_map_valid *val, int i1, int i2);

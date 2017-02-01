@@ -20,17 +20,6 @@
 #define BUF_SIZE 1
 #define MEM_BUF 20000
 
-t_meta				read_map_meta(int fd)
-{
-	t_meta		meta;
-	char		buffer;
-
-	set_meta(&meta, fd);
-	read(fd, &buffer, 1);
-	count_width(&meta, fd);
-	return (meta);
-}
-
 t_cell				*read_on_memory(int fd, t_meta meta)
 {
 	t_cell		*cell_array;
@@ -84,26 +73,17 @@ void				display_cells(t_meta meta, t_cell *cells, t_biggest big)
 	}
 }
 
-int					file_read(char *file_path)
+int					file_read(char *file_path, t_meta *meta)
 {
 	int				fd;
-	t_meta			meta;
 	t_cell			*matrix;
 	t_biggest		biggest;
 
 	fd = open(file_path, O_RDONLY);
-	if (fd == -1)
-	{
-		ft_putstr("File open failed.\n");
-		return (1);
-	}
-	meta = read_map_meta(fd);
-	close(fd);
-	fd = open(file_path, O_RDONLY);
-	matrix = read_on_memory(fd, meta);
-	count_square(meta, matrix);
+	matrix = read_on_memory(fd, *meta);
+	count_square(*meta, matrix);
 	biggest = check_biggest_square(matrix);
-	display_cells(meta, matrix, biggest);
+	display_cells(*meta, matrix, biggest);
 	free(matrix);
 	close(fd);
 	return (0);
@@ -111,13 +91,14 @@ int					file_read(char *file_path)
 
 int					main(int argc, char **argv)
 {
-	int i;
+	t_meta			meta;
+	int				i;
 
 	if (argc < 2)
 	{
 		read_stdin();
-		if (map_is_valid("./tmp/tmp"))
-			file_read("./tmp/tmp");
+		if (map_is_valid("./tmp/tmp", &meta))
+			file_read("./tmp/tmp", &meta);
 		else
 			write(2, "map error\n", 10);
 		return (0);
@@ -125,8 +106,8 @@ int					main(int argc, char **argv)
 	i = 1;
 	while (i < argc)
 	{
-		if (map_is_valid(argv[i]))
-			file_read(argv[i]);
+		if (map_is_valid(argv[i], &meta))
+			file_read(argv[i], &meta);
 		else
 			write(2, "map error\n", 10);
 		i++;

@@ -66,6 +66,7 @@ void				set_valid_1(t_map_valid *val, t_meta *meta)
 	}
 	first_line[val->i] = '\0';
 	val->line_num = ft_atoi(first_line);
+	meta->height = ft_atoi(first_line);
 	free(first_line);
 }
 
@@ -82,6 +83,7 @@ void				set_valid_2(t_map_valid *val, t_meta *meta)
 			width_is_valid(val, val->col_checker, val->col_counter);
 			val->col_checker = val->col_counter;
 			val->col_counter = 0;
+			meta->width = val->col_checker - 1;
 		}
 		val->col_counter = val->col_counter + 1;
 	}
