@@ -29,7 +29,7 @@ t_meta				read_map_meta(int fd)
 	int			char_count;
 	char		*map_length_str;
 
-	map_length_str = malloc(sizeof(char) * (10000000));
+	map_length_str = malloc(sizeof(char) * (1000000));
 	line_count = 0;
 	char_count = 0;
 	while (read(fd, &buffer, 1) != 0)
@@ -53,9 +53,7 @@ t_meta				read_map_meta(int fd)
 	while (read(fd, &buffer, 1) != 0)
 	{
 		if (buffer != '\n')
-		{
 			meta.width++;
-		}
 		else
 			break ;
 	}
