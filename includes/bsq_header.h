@@ -13,6 +13,21 @@
 #ifndef BSQ_HEADER_H
 # define BSQ_HEADER_H
 
+typedef	struct		s_validator
+{
+	int		row_counter;
+	int		col_counter;
+	int		invalid_cell;
+	int		invalid_width;
+	int		invalid_flag;
+	int		col_checker;
+	int		line_num;
+	int		i;
+	char	*first_line;
+	char	buffer;
+	int		fd;
+}					t_map_valid;
+
 typedef struct		s_point
 {
 	int		x;
@@ -53,5 +68,12 @@ void				read_stdin(void);
 void				count_square(t_meta meta, t_cell *cell_array);
 t_biggest			check_biggest_square(t_cell *cell_array);
 int					is_biggest_cells(t_meta meta, int i, t_biggest biggest);
+int					map_is_valid(char *file_path);
+
+void				init_valid(t_map_valid *val);
+void				width_is_valid(t_map_valid *val, int i1, int i2);
+void				cell_is_valid(t_map_valid *val, t_meta *meta, char c);
+void				set_valid_1(t_map_valid *val, t_meta *meta);
+void				set_valid_2(t_map_valid *val, t_meta *meta);
 
 #endif
