@@ -50,7 +50,7 @@ void				set_meta(t_meta *meta, int fd);
 void				count_width(t_meta *meta, int fd);
 
 void				count_square(t_meta meta, t_cell *cell_array);
-t_biggest			check_biggest_square(t_meta meta, t_cell *cell_array);
+t_biggest			check_biggest_square(t_cell *cell_array);
 int					is_biggest_cells(t_meta meta, int i, t_biggest biggest);
 
 #endif

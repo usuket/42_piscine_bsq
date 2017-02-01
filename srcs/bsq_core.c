@@ -72,7 +72,7 @@ void				count_square(t_meta meta, t_cell *cells)
 	}
 }
 
-t_biggest			check_biggest_square(t_meta meta, t_cell *cells)
+t_biggest			check_biggest_square(t_cell *cells)
 {
 	int			i;
 	int			index;

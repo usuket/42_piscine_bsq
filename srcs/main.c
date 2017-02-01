@@ -99,7 +99,7 @@ int					file_read(char *file_path)
 	fd = open(file_path, O_RDONLY);
 	matrix = read_on_memory(fd, meta);
 	count_square(meta, matrix);
-	biggest = check_biggest_square(meta, matrix);
+	biggest = check_biggest_square(matrix);
 	display_cells(meta, matrix, biggest);
 	free(matrix);
 	close(fd);
