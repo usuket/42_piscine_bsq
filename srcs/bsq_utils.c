@@ -12,17 +12,23 @@
 
 #include <ft_header.h>
 #include <bsq_header.h>
+#include <errno.h>
+#include <fcntl.h>
 #include <stdlib.h>
 #include <unistd.h>
 
+#define STD_READ_BUF 30
+
 void				read_stdin(void)
 {
-	char	buffer;
+	char	buffer[STD_READ_BUF];
 	int		fd;
 
 	fd = open("./tmp/tmp", O_RDWR | O_CREAT | O_TRUNC, 0666);
-	while (read(0, &buffer, 1) != 0)
-		write(fd, &buffer, 1);
+	while (read(0, &buffer, STD_READ_BUF) != 0)
+	{
+		write(fd, &buffer, STD_READ_BUF);
+	}
 	close(fd);
 }
 
