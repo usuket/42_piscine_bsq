@@ -79,6 +79,8 @@ t_biggest			check_biggest_square(t_cell *cells)
 	int			size;
 	t_biggest	biggest;
 
+	biggest.size = 0;
+	biggest.index = 0;
 	i = 0;
 	index = 0;
 	size = 0;

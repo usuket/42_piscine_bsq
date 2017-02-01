@@ -52,6 +52,7 @@ t_cell				*read_on_memory(int fd, t_meta meta)
 			i++;
 		}
 	}
+	cell_array[i].cell = '\0';
 	return (cell_array);
 }
 
@@ -68,6 +69,8 @@ void				display_cells(t_meta meta, t_cell *cells, t_biggest big)
 		while (x < meta.width)
 		{
 			i = yx_to_index(meta, y, x);
+			if (cells[i].cell == '\0')
+				return ;
 			if (is_biggest_cells(meta, i, big))
 				ft_putchar(meta.full);
 			else if (cells[i].cell == meta.obstacle)
