@@ -21,6 +21,21 @@
 #define BUF_SIZE 1
 #define MEM_BUF 20000
 
+void				count_width(t_meta *meta, int fd)
+{
+	char		buffer;
+
+	while (read(fd, &buffer, 1) != 0)
+	{
+		if (buffer != '\n')
+		{
+			meta->width++;
+		}
+		else
+			break ;
+	}
+}
+
 t_meta				read_map_meta(int fd)
 {
 	t_meta		meta;
@@ -50,13 +65,7 @@ t_meta				read_map_meta(int fd)
 		}
 	}
 	read(fd, &buffer, 1);
-	while (read(fd, &buffer, 1) != 0)
-	{
-		if (buffer != '\n')
-			meta.width++;
-		else
-			break ;
-	}
+	count_width(&meta, fd);
 	meta.height = ft_atoi(map_length_str);
 	free(map_length_str);
 	return (meta);
