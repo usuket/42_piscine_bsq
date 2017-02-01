@@ -15,6 +15,17 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+void				read_stdin(void)
+{
+	char	buffer;
+	int		fd;
+
+	fd = open("./tmp/tmp", O_RDWR | O_CREAT | O_TRUNC, 0666);
+	while (read(0, &buffer, 1) != 0)
+		write(fd, &buffer, 1);
+	close(fd);
+}
+
 void				set_meta(t_meta *meta, int fd)
 {
 	char		buffer;

@@ -48,6 +48,7 @@ t_point				index_to_point(t_meta meta, int index);
 
 void				set_meta(t_meta *meta, int fd);
 void				count_width(t_meta *meta, int fd);
+void				read_stdin(void);
 
 void				count_square(t_meta meta, t_cell *cell_array);
 t_biggest			check_biggest_square(t_cell *cell_array);
