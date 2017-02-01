@@ -17,19 +17,38 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#define STD_READ_BUF 30
+#define STD_READ_BUF 1000
+
+int					ft_strlen(char *str)
+{
+	int		i;
+
+	i = 0;
+	while (str[i] != '\0')
+	{
+		i++;
+	}
+	return (i);
+}
 
 void				read_stdin(void)
 {
 	char	buffer[STD_READ_BUF];
 	int		fd;
+	int		size;
 
 	fd = open("./tmp/tmp", O_RDWR | O_CREAT | O_TRUNC, 0666);
-	while (read(0, &buffer, STD_READ_BUF) != 0)
+	while (1)
 	{
-		write(fd, &buffer, STD_READ_BUF);
+		size = read(0, &buffer, STD_READ_BUF);
+		if (size > 0)
+			write(fd, &buffer, size);
+		else
+		{
+			close(fd);
+			break ;
+		}
 	}
-	close(fd);
 }
 
 void				set_meta(t_meta *meta, int fd)
