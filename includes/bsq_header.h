@@ -76,4 +76,8 @@ void				cell_is_valid(t_map_valid *val, t_meta *meta, char c);
 void				set_valid_1(t_map_valid *val, t_meta *meta);
 void				set_valid_2(t_map_valid *val, t_meta *meta);
 
+void				write_buffer(char *buffer, int size);
+char				define_cell(t_meta m, t_cell *cells, int i, t_biggest big);
+void				display_cells(t_meta meta, t_cell *cells, t_biggest big);
+
 #endif
