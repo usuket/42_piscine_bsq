@@ -17,64 +17,21 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-#include <stdio.h>
-
-
-
-#include <time.h>
 int					file_read(char *file_path, t_meta *meta)
 {
-	time_t 			time1;
-	time_t 			time2;
 	int				fd;
 	t_cell			*matrix;
 	t_biggest		biggest;
 
-	time(&time1);
 	fd = open(file_path, O_RDONLY);
-	time(&time2);
-	fprintf(stderr, "fileopen: %f秒\n", difftime(time2, time1));
-
-	time(&time1);
 	matrix = read_on_memory(fd, *meta);
-	time(&time2);
-	fprintf(stderr, "read_on_memory: %f秒\n", difftime(time2, time1));
-
-	time(&time1);
 	count_square(*meta, matrix);
-	time(&time2);
-	fprintf(stderr, "count_square: %f秒\n", difftime(time2, time1));
-
-	time(&time1);
 	biggest = check_biggest_square(matrix);
-	time(&time2);
-	fprintf(stderr, "check_biggest_square: %f秒\n", difftime(time2, time1));
-
-	time(&time1);
 	display_cells(*meta, matrix, biggest);
-	time(&time2);
-	fprintf(stderr, "display_cells: %f秒\n", difftime(time2, time1));
-
 	free(matrix);
 	close(fd);
 	return (0);
 }
-//
-//int					file_read(char *file_path, t_meta *meta)
-//{
-//	int				fd;
-//	t_cell			*matrix;
-//	t_biggest		biggest;
-//
-//	fd = open(file_path, O_RDONLY);
-//	matrix = read_on_memory(fd, *meta);
-//	count_square(*meta, matrix);
-//	biggest = check_biggest_square(matrix);
-//	display_cells(*meta, matrix, biggest);
-//	free(matrix);
-//	close(fd);
-//	return (0);
-//}
 
 int					main(int argc, char **argv)
 {
