@@ -55,7 +55,7 @@ t_cell				*read_on_memory(int fd, t_meta meta)
 	int			length;
 
 	cell_array = malloc(sizeof(t_cell) * (meta.width * meta.height + MEM_BUF));
-	while (read(fd, &buffer, 1) > 0 && (buffer == '\n'))
+	while (read(fd, &buffer, 1) > 0)
 	{
 		if (buffer == '\n')
 			break ;
