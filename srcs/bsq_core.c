@@ -20,9 +20,17 @@ typedef struct		s_cell_crawler
 	int				target_x;
 }					t_cell_crawler;
 
-void				fill_cell(t_cell_crawler *c, t_meta m, t_cell *cells, int i)
+int					g_largest = 0;
+void				set_largest(int num)
+{
+	if(num > g_largest)
+		g_largest = num;
+}
+
+void				fill_cell(t_cell_crawler *c, t_cell *cells, int i)
 {
 	cells[i].size = c->size;
+	set_largest(c->size);
 }
 
 void				crawl_cell(t_meta meta, t_cell *cells, int index)
@@ -42,7 +50,7 @@ void				crawl_cell(t_meta meta, t_cell *cells, int index)
 			if (point.x + c.i >= meta.width || point.y + c.i >= meta.height
 				|| cells[c.target_y].cell == meta.obstacle
 				|| cells[c.target_x].cell == meta.obstacle)
-				fill_cell(&c, meta, cells, index);
+				fill_cell(&c, cells, index);
 			else
 				continue;
 			return ;
@@ -57,11 +65,12 @@ void				count_square(t_meta meta, t_cell *cells)
 	int y;
 	int x;
 
+	g_largest = 0;
 	y = 0;
-	while (y < meta.height)
+	while (y < meta.height - g_largest)
 	{
 		x = 0;
-		while (x < meta.width)
+		while (x < meta.width - g_largest)
 		{
 			index = yx_to_index(meta, y, x);
 			if (cells[index].cell == meta.empty && cells[index].size == 0)
