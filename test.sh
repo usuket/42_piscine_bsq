@@ -13,29 +13,29 @@
 TARGET=map1_1_1
 echo ${TARGET}
 time ./bsq input/${TARGET} > output/${TARGET}
-diff output/${TARGET} verified/${TARGET}
+diff output/${TARGET} verified/${TARGET} | wc -l
 
 TARGET=map2_2_0
 echo ${TARGET}
 time ./bsq input/${TARGET} > output/${TARGET}
-diff output/${TARGET} verified/${TARGET}
+diff output/${TARGET} verified/${TARGET} | wc -l
 
 TARGET=map3_3_1
 echo ${TARGET}
 time ./bsq input/${TARGET} > output/${TARGET}
-diff output/${TARGET} verified/${TARGET}
+diff output/${TARGET} verified/${TARGET} | wc -l
 
 TARGET=map10_10_2
 echo ${TARGET}
 time ./bsq input/${TARGET} > output/${TARGET}
-diff output/${TARGET} verified/${TARGET}
+diff output/${TARGET} verified/${TARGET} | wc -l
 
 TARGET=map100_100_2
 echo ${TARGET}
 time ./bsq input/${TARGET} > output/${TARGET}
-diff output/${TARGET} verified/${TARGET}
+diff output/${TARGET} verified/${TARGET} | wc -l
 
 TARGET=map1000_1000_2
 echo ${TARGET}
 time ./bsq input/${TARGET} > output/${TARGET}
-diff output/${TARGET} verified/${TARGET}
+diff output/${TARGET} verified/${TARGET} | wc -l
