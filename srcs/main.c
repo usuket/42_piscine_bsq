@@ -17,49 +17,64 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-#define BUF_SIZE 1
-#define MEM_BUF 20000
+#include <stdio.h>
 
-t_cell				*read_on_memory(int fd, t_meta meta)
-{
-	t_cell		*cell_array;
-	char		buffer;
-	int			i;
 
-	cell_array = malloc(sizeof(t_cell) * (meta.width * meta.height + MEM_BUF));
-	while (read(fd, &buffer, 1) > 0)
-	{
-		if (buffer == '\n')
-			break ;
-	}
-	i = 0;
-	while (read(fd, &buffer, 1) > 0)
-	{
-		if (buffer != '\n')
-		{
-			cell_array[i].cell = buffer;
-			i++;
-		}
-	}
-	cell_array[i].cell = '\0';
-	return (cell_array);
-}
 
+#include <time.h>
 int					file_read(char *file_path, t_meta *meta)
 {
+	time_t 			time1;
+	time_t 			time2;
 	int				fd;
 	t_cell			*matrix;
 	t_biggest		biggest;
 
+	time(&time1);
 	fd = open(file_path, O_RDONLY);
+	time(&time2);
+	fprintf(stderr, "fileopen: %f秒\n", difftime(time2, time1));
+
+	time(&time1);
 	matrix = read_on_memory(fd, *meta);
+	time(&time2);
+	fprintf(stderr, "read_on_memory: %f秒\n", difftime(time2, time1));
+
+	time(&time1);
 	count_square(*meta, matrix);
+	time(&time2);
+	fprintf(stderr, "count_square: %f秒\n", difftime(time2, time1));
+
+	time(&time1);
 	biggest = check_biggest_square(matrix);
+	time(&time2);
+	fprintf(stderr, "check_biggest_square: %f秒\n", difftime(time2, time1));
+
+	time(&time1);
 	display_cells(*meta, matrix, biggest);
+	time(&time2);
+	fprintf(stderr, "display_cells: %f秒\n", difftime(time2, time1));
+
 	free(matrix);
 	close(fd);
 	return (0);
 }
+//
+//int					file_read(char *file_path, t_meta *meta)
+//{
+//	int				fd;
+//	t_cell			*matrix;
+//	t_biggest		biggest;
+//
+//	fd = open(file_path, O_RDONLY);
+//	matrix = read_on_memory(fd, *meta);
+//	count_square(*meta, matrix);
+//	biggest = check_biggest_square(matrix);
+//	display_cells(*meta, matrix, biggest);
+//	free(matrix);
+//	close(fd);
+//	return (0);
+//}
 
 int					main(int argc, char **argv)
 {

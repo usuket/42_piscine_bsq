@@ -80,4 +80,6 @@ void				write_buffer(char *buffer, int size);
 char				define_cell(t_meta m, t_cell *cells, int i, t_biggest big);
 void				display_cells(t_meta meta, t_cell *cells, t_biggest big);
 
+int					read_on_memory_impl(int fd, t_cell *cell_array);
+t_cell				*read_on_memory(int fd, t_meta meta);
 #endif
